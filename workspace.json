@@ -1,6 +1,93 @@
 {
   "version": 2,
-  "projects": {},
+  "projects": {
+    "vue-vue-app": {
+      "projectType": "application",
+      "root": "apps/vue/vue-app",
+      "sourceRoot": "apps/vue/vue-app/src",
+      "targets": {
+        "build": {
+          "executor": "@nx-plus/vue:browser",
+          "options": {
+            "dest": "dist/apps/vue/vue-app",
+            "index": "apps/vue/vue-app/public/index.html",
+            "main": "apps/vue/vue-app/src/main.ts",
+            "tsConfig": "apps/vue/vue-app/tsconfig.app.json"
+          },
+          "configurations": {
+            "production": {
+              "mode": "production",
+              "filenameHashing": true,
+              "productionSourceMap": true,
+              "css": {
+                "extract": true,
+                "sourceMap": false
+              }
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nx-plus/vue:dev-server",
+          "options": {
+            "browserTarget": "vue-vue-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "vue-vue-app:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/vue/vue-app/**/*.{ts,tsx,vue}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/vue/vue-app"
+          ],
+          "options": {
+            "jestConfig": "apps/vue/vue-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "vue-vue-app-e2e": {
+      "root": "apps/vue/vue-app-e2e",
+      "sourceRoot": "apps/vue/vue-app-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/vue/vue-app-e2e/cypress.json",
+            "devServerTarget": "vue-vue-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "vue-vue-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "apps/vue/vue-app-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "defaultCollection": "@nrwl/workspace"
   }
